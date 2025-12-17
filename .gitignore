@@ -56,3 +56,5 @@ dkms.conf
 
 #Linux binary files    
 *.bin
+#vscode
+.vscode/

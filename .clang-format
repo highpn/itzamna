@@ -1,0 +1,38 @@
+BasedOnStyle: LLVM
+Language: Cpp
+
+# Tabs like Software code
+UseTab: ForIndentation
+IndentWidth: 8
+TabWidth: 8
+
+# Brace style: K&R 
+BreakBeforeBraces: Attach
+
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: true
+
+IndentCaseLabels: false
+ContinuationIndentWidth: 8
+
+# Pointer alignment: style (* next to variable)
+PointerAlignment: Right
+
+#  code freely exceeds 100 chars
+ColumnLimit: 0
+
+# No fancy alignment
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignTrailingComments: false
+
+# Don’t reflow comments; has special layout
+ReflowComments: false
+
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpaceAfterCStyleCast: false
+
+SortIncludes: false

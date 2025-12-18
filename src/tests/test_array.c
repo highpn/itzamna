@@ -35,7 +35,7 @@ static inline void test_array_init_and_push(void) {
 	array_pop(&array); // Test pop
 	ASSERT_EQ(array.count, 19);
 	ASSERT_EQ(*(int *)array_get(&array, 18), 18);
-	ASSERT_EQ(array.capacity, 32);
+	ASSERT_EQ(array.capacity, 32); // Capacity should have expanded to 32
 	// Free array
 	array_free(&array);
 	ASSERT_EQ(array.data, NULL); // Ensure data is NULL after free

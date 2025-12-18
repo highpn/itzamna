@@ -24,11 +24,16 @@ SRC_DIRS := \
 INCLUDE_DIRS := $(SRC_DIRS)
 INC := $(addprefix -I,$(INCLUDE_DIRS))
 
+
+
 BUILD_DIR := build
 BIN_DIR   := $(BUILD_DIR)/bin
 OBJ_DIR   := $(BUILD_DIR)/obj
 
 ENGINE := $(BIN_DIR)/engine
+LIB_DIR := $(BUILD_DIR)/lib
+ENGINE_LIB := $(LIB_DIR)/libengine.a
+
 
 # ===============================
 # Platform Detection
@@ -61,13 +66,22 @@ OBJ := $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
 all: $(ENGINE)
 
 # ===============================
+# Build Engine Static Library
+# ===============================
+$(ENGINE_LIB): $(OBJ)
+	@mkdir -p $(LIB_DIR)
+	ar rcs $@ $@
+	ar rcs $@ $(OBJ)
+	@echo "Built engine library: $@"
+# ===============================
 # Build Engine
 # ===============================
-$(ENGINE): $(OBJ)
+$(ENGINE): $(ENGINE_LIB)
 	@mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ \
+		$(OBJ) \
+		$(LIBS)
 	@echo "Built engine: $@"
-
 # ===============================
 # Compile Objects
 # ===============================

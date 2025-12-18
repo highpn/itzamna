@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../math/vec3.h"
+#include "../math/trig.h"
 #define NORMALIZE_TOL 1e-3f
 #define EPSILON 1e-6f
 
@@ -154,6 +155,42 @@ static void test_vec3_normalize_edge_cases(void) {
 	ASSERT_NEAR(n1.y, 1.0f, 1E-2f);
 	ASSERT_NEAR(n1.z, 0.0f, EPSILON);
 }
+//test trig functions
+static void test_trig_functions(void) {
+	// Test fast_sin
+	ASSERT_NEAR(fast_sin(0.0f), 0.0f, 1e-3f);
+	ASSERT_NEAR(fast_sin(PI / 2), 1.0f, 1e-2f);
+	ASSERT_NEAR(fast_sin(PI), 0.0f, 1e-2f);
+	ASSERT_NEAR(fast_sin(3 * PI / 2), -1.0f, 1e-2f);
+	ASSERT_NEAR(fast_sin(2 * PI), 0.0f, 1e-2f);
+	ASSERT_NEAR(fast_sin(PI / 6), 0.5f, 1e-2f);
+	ASSERT_NEAR(fast_sin(PI / 3), 0.866f, 1e-2f);
+	// Test fast_acos
+	ASSERT_NEAR(fast_acos(1.0f), 0.0f, 1e-3f);
+	ASSERT_NEAR(fast_acos(0.0f), PI / 2, 1e-2f);
+	ASSERT_NEAR(fast_acos(-1.0f), PI, 1e-2f);
+	// Test fast_cos
+	ASSERT_NEAR(fast_cos(0.0f), 1.0f, 1e-2f);
+	ASSERT_NEAR(fast_cos(PI / 2), 0.0f, 1e-2f);
+	ASSERT_NEAR(fast_cos(PI), -1.0f, 1e-2f);
+	ASSERT_NEAR(fast_cos(3 * PI / 2), 0.0f, 1e-2f);
+	ASSERT_NEAR(fast_cos(2 * PI), 1.0f, 1e-2f);
+
+	// Test fast_atan2
+	ASSERT_NEAR(fast_atan2(0.0f, 1.0f), 0.0f, 1e-3f);
+	ASSERT_NEAR(fast_atan2(1.0f, 0.0f), PI / 2, 1e-2f);
+	ASSERT_NEAR(fast_atan2(0.0f, -1.0f), PI, 1e-2f);
+	ASSERT_NEAR(fast_atan2(-1.0f, 0.0f), -PI / 2, 1e-2f);
+	// Additional tests for other quadrants
+	ASSERT_NEAR(fast_atan2(1.0f, 1.0f), PI / 4, 1e-2f);
+	ASSERT_NEAR(fast_atan2(-1.0f, -1.0f), -3 * PI / 4, 1e-2f);
+}
+//test fast_abs
+static void test_fast_fabs(void) {
+	ASSERT_NEAR(fast_fabs(3.5f), 3.5f, 1e-6f);
+	ASSERT_NEAR(fast_fabs(-3.5f), 3.5f, 1e-6f);
+	ASSERT_NEAR(fast_fabs(0.0f), 0.0f, 1e-6f);
+}
 /* ===============================
    Test Runner
    =============================== */
@@ -170,6 +207,8 @@ int main(void) {
 	test_vec3_dot_cross();
 	test_vec3_length_normalize();
 	test_vec3_normalize_edge_cases();
+	test_trig_functions();
+	test_fast_fabs();
 	printf("All vec3 tests passed\n");
 	return 0;
 }

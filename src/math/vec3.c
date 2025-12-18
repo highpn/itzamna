@@ -2,6 +2,7 @@
     * vec3.c
     *
     * Implementation of 3D vector operations.
+	* Author: Highpn
 */
 
 #include "vec3.h"

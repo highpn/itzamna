@@ -9,7 +9,7 @@
 		}                                                                                                  \
 	} while (0)
 
-static inline test_hash_string(void) {
+static inline void test_hash_string(void) {
 	const char *test_str = "hello";
 	uint32_t hash = hash_string(test_str, strlen(test_str));
 	// Precomputed hash value for "hello"

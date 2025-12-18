@@ -18,7 +18,7 @@
 			exit(1);                                                                        \
 		}                                                                                       \
 	} while (0)
-static void test_array_init_and_push(void) {
+static inline void test_array_init_and_push(void) {
 	Array array;
 	array_init(&array, sizeof(int));
 

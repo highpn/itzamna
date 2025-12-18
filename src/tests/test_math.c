@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "../math/vec3.h"
 #include "../math/trig.h"
+#include "../math/mat4.h"
 #define NORMALIZE_TOL 1e-3f
 #define EPSILON 1e-6f
 
@@ -191,6 +192,43 @@ static void test_fast_fabs(void) {
 	ASSERT_NEAR(fast_fabs(-3.5f), 3.5f, 1e-6f);
 	ASSERT_NEAR(fast_fabs(0.0f), 0.0f, 1e-6f);
 }
+//test mat4 functions
+static void test_mat4_functions(void) {
+	mat4_t identity = mat4_identity();
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (i == j) {
+				ASSERT_NEAR(identity.m[i][j], 1.0f, EPSILON);
+			} else {
+				ASSERT_NEAR(identity.m[i][j], 0.0f, EPSILON);
+			}
+		}
+	}
+
+	mat4_t translation = mat4_translate(1.0f, 2.0f, 3.0f);
+	ASSERT_NEAR(translation.m[3][0], 1.0f, EPSILON);
+	ASSERT_NEAR(translation.m[3][1], 2.0f, EPSILON);
+	ASSERT_NEAR(translation.m[3][2], 3.0f, EPSILON);
+
+	mat4_t scale = mat4_scale(2.0f, 3.0f, 4.0f);
+	ASSERT_NEAR(scale.m[0][0], 2.0f, EPSILON);
+	ASSERT_NEAR(scale.m[1][1], 3.0f, EPSILON);
+	ASSERT_NEAR(scale.m[2][2], 4.0f, EPSILON);
+	mat4_t rotation_x = mat4_rotate_x(PI / 2);
+	ASSERT_NEAR(rotation_x.m[1][1], 0.0f, EPSILON);
+	ASSERT_NEAR(rotation_x.m[1][2], 1.0f, EPSILON);
+	ASSERT_NEAR(rotation_x.m[2][1], -1.0f, EPSILON);
+	ASSERT_NEAR(rotation_x.m[2][2], 0.0f, EPSILON);
+	mat4_t A = mat4_scale(2.0f, 3.0f, 4.0f);
+	mat4_t B = mat4_translate(1.0f, 2.0f, 3.0f);
+	mat4_t C = mat4_multiply(A, B);
+	ASSERT_NEAR(C.m[0][0], 2.0f, EPSILON);
+	ASSERT_NEAR(C.m[1][1], 3.0f, EPSILON);
+	ASSERT_NEAR(C.m[2][2], 4.0f, EPSILON);
+	ASSERT_NEAR(C.m[3][0], 1.0f, EPSILON);
+	ASSERT_NEAR(C.m[3][1], 2.0f, EPSILON);
+	ASSERT_NEAR(C.m[3][2], 3.0f, EPSILON);
+}
 /* ===============================
    Test Runner
    =============================== */
@@ -207,8 +245,13 @@ int main(void) {
 	test_vec3_dot_cross();
 	test_vec3_length_normalize();
 	test_vec3_normalize_edge_cases();
+	printf("> All vec3 tests passed\n");
 	test_trig_functions();
+	printf("> All trig tests passed\n");
 	test_fast_fabs();
-	printf("All vec3 tests passed\n");
+	printf("> All fast_fabs tests passed\n");
+	test_mat4_functions();
+	printf("> All mat4 tests passed\n");
+	printf("> All math tests passed\n");
 	return 0;
 }

@@ -6,6 +6,7 @@
 */
 
 #include "mat4.h"
+#include "trig.h"
 mat4_t mat4_identity(void) {
 	mat4_t result = {0};
 	result.m[0][0] = 1.0f;
@@ -37,5 +38,35 @@ mat4_t mat4_scale(float x, float y, float z) {
 	result.m[0][0] = x;
 	result.m[1][1] = y;
 	result.m[2][2] = z;
+	return result;
+}
+mat4_t mat4_rotate_x(float angle_rad) {
+	mat4_t result = mat4_identity();
+	float c = fast_cos(angle_rad);
+	float s = fast_sin(angle_rad);
+	result.m[1][1] = c;
+	result.m[1][2] = s;
+	result.m[2][1] = -s;
+	result.m[2][2] = c;
+	return result;
+}
+mat4_t mat4_rotate_y(float angle_rad) {
+	mat4_t result = mat4_identity();
+	float c = fast_cos(angle_rad);
+	float s = fast_sin(angle_rad);
+	result.m[0][0] = c;
+	result.m[0][2] = -s;
+	result.m[2][0] = s;
+	result.m[2][2] = c;
+	return result;
+}
+mat4_t mat4_rotate_z(float angle_rad) {
+	mat4_t result = mat4_identity();
+	float c = fast_cos(angle_rad);
+	float s = fast_sin(angle_rad);
+	result.m[0][0] = c;
+	result.m[0][1] = s;
+	result.m[1][0] = -s;
+	result.m[1][1] = c;
 	return result;
 }

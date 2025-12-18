@@ -170,6 +170,6 @@ int main(void) {
 	test_vec3_dot_cross();
 	test_vec3_length_normalize();
 	test_vec3_normalize_edge_cases();
-	printf("All vec3_normalize tests passed\n");
+	printf("All vec3 tests passed\n");
 	return 0;
 }

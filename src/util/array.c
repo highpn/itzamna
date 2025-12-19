@@ -10,16 +10,15 @@
 void array_init(Array *array, size_t element_size) {
 	array->data = NULL;
 	array->element_size = element_size;
-	array->capacity = ARRAY_INIT_CAPACITY;
+	array->capacity = 0;
 	array->count = 0;
 }
 
 void array_push(Array *array, void *item) {
-	if (array->data == NULL) {
-		array->data = malloc(array->element_size * array->capacity);
-	}
 
 	if (array->count >= array->capacity) {
+		if (array->capacity == 0)
+			array->capacity = ARRAY_INIT_CAPACITY;
 		array->capacity *= 2;
 		array->data = realloc(array->data, array->element_size * array->capacity);
 	}

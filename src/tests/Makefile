@@ -22,7 +22,7 @@ run: all
 		echo "Running $$t"; \
 		./$$t || exit 1; \
 	done
-
+	@echo All tests passed.
 clean:
 	rm -f $(TEST_BINS)
 

@@ -20,7 +20,7 @@ SRC_DIRS := \
 	runtime \
 	util \
 	world \
-	graph
+	graph network 
 
 INC := $(addprefix -I,$(SRC_DIRS))
 INC += -I/usr/include/SDL3

@@ -77,6 +77,6 @@ void framebuffer_rotate(framebuffer_t *fb, float angle_rad) {
 
 void framebuffer_shade(framebuffer_t *fb, uint32_t color) {
 	for (int i = 0; i < fb->width * fb->height; i++) {
-		fb->pixels[i] &= color;
+		fb->pixels[i] &= color + i % fb->width; // simple shading effect
 	}
 }

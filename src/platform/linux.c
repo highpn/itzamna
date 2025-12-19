@@ -37,7 +37,7 @@ SDL_Window *platform_init(int width, int height, const char *title) {
 		return NULL;
 	}
 
-	window = SDL_CreateWindow(title, width, height, 0);
+	window = SDL_CreateWindow(title, width, height, SDL_WINDOW_RESIZABLE);
 	if (!window) return NULL;
 
 	surface = SDL_GetWindowSurface(window);

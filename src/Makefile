@@ -19,7 +19,8 @@ SRC_DIRS := \
 	platform \
 	runtime \
 	util \
-	world
+	world \
+	graph
 
 INC := $(addprefix -I,$(SRC_DIRS))
 INC += -I/usr/include/SDL3

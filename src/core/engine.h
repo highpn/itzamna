@@ -14,7 +14,6 @@ void mixer_init(void);
 void world_init(void);
 void runtime_init(void);
 void log_init(void);
-void platform_init(void);
 void timer_init(void);
 void renderer_init(void);
 void runtime_shutdown(void);
@@ -22,7 +21,6 @@ void world_shutdown(void);
 void mixer_shutdown(void);
 void renderer_shutdown(void);
 void timer_shutdown(void);
-void platform_shutdown(void);
 void log_shutdown(void);
 // Function prototypes for the engine loop functions
 int engine_running(void);

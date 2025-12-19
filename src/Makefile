@@ -21,19 +21,16 @@ SRC_DIRS := \
 	util \
 	world
 
-INCLUDE_DIRS := $(SRC_DIRS)
-INC := $(addprefix -I,$(INCLUDE_DIRS))
-
-
+INC := $(addprefix -I,$(SRC_DIRS))
+INC += -I/usr/include/SDL3
 
 BUILD_DIR := build
 BIN_DIR   := $(BUILD_DIR)/bin
 OBJ_DIR   := $(BUILD_DIR)/obj
+LIB_DIR   := $(BUILD_DIR)/lib
 
 ENGINE := $(BIN_DIR)/engine
-LIB_DIR := $(BUILD_DIR)/lib
 ENGINE_LIB := $(LIB_DIR)/libengine.a
-
 
 # ===============================
 # Platform Detection
@@ -42,7 +39,7 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
 	PLATFORM_SRC := platform/linux.c
-	LIBS := -lm -lpthread
+	LIBS := -lSDL3 -lm -lpthread -ldl -lasound
 endif
 
 ifeq ($(OS),Windows_NT)
@@ -53,9 +50,8 @@ endif
 # ===============================
 # Source Files
 # ===============================
-SRC := \
-	$(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c)) \
-	$(PLATFORM_SRC)
+SRC := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c)) \
+       $(PLATFORM_SRC)
 
 OBJ := $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
 
@@ -70,66 +66,23 @@ all: $(ENGINE)
 # ===============================
 $(ENGINE_LIB): $(OBJ)
 	@mkdir -p $(LIB_DIR)
-	ar rcs $@ $@
 	ar rcs $@ $(OBJ)
 	@echo "Built engine library: $@"
+
 # ===============================
-# Build Engine
+# Build Engine Executable
 # ===============================
 $(ENGINE): $(ENGINE_LIB)
 	@mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) -o $@ \
-		$(OBJ) \
-		$(LIBS)
+	$(CC) $(CFLAGS) -o $@ $(ENGINE_LIB) $(LIBS)
 	@echo "Built engine: $@"
+
 # ===============================
 # Compile Objects
 # ===============================
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
-
-# ===============================
-# Tools
-# ===============================
-TOOLS := \
-	mapcompiler \
-	texturepacker
-
-.PHONY: tools
-tools: $(TOOLS)
-
-mapcompiler:
-	$(CC) $(CFLAGS) $(INC) \
-		tools/mapcompiler/*.c \
-		-o $(BIN_DIR)/mapcompiler
-
-texturepacker:
-	$(CC) $(CFLAGS) $(INC) \
-		tools/texturepacker/*.c \
-		-o $(BIN_DIR)/texturepacker
-
-# ===============================
-# Tests
-# ===============================
-TESTS := \
-	test_bsp \
-	test_collision
-
-.PHONY: tests
-tests: $(TESTS)
-
-test_bsp:
-	$(CC) $(CFLAGS) $(INC) \
-		tests/test_bsp.c \
-		world/bsp.c math/plane.c util/array.c \
-		-o $(BIN_DIR)/test_bsp
-
-test_collision:
-	$(CC) $(CFLAGS) $(INC) \
-		tests/test_collision.c \
-		world/collision.c math/plane.c \
-		-o $(BIN_DIR)/test_collision
 
 # ===============================
 # Clean

@@ -6,6 +6,7 @@
 */
 
 #include "engine.h"
+#include "../platform/platform.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +14,12 @@ static int engine_is_running = 1;
 static int graphics_mode = 1;
 
 int main(int argc, char *argv[]) {
-
+	int d = platform_check();
+	if (d != 0) {
+		printf("Platform check failed with code %d\n", d);
+		exit(0);
+	}
+	exit(0);
 	return engine_run(argc, argv);
 }
 
@@ -25,7 +31,7 @@ int engine_run(int argc, char *argv[]) {
 
 	log_init();
 	config_load(argc, argv);
-	platform_init();
+	platform_init(640, 480, "Itzamna");
 	timer_init();
 
 	if (argc > 1 && strcmp(argv[1], "--nogfx") == 0) {
@@ -80,9 +86,6 @@ void runtime_init(void) {
 void log_init(void) {
 	// Implementation for log initialization
 }
-void platform_init(void) {
-	// Implementation for platform initialization
-}
 void timer_init(void) {
 	// Implementation for timer initialization
 }
@@ -104,9 +107,7 @@ void renderer_shutdown(void) {
 void timer_shutdown(void) {
 	// Implementation for timer shutdown
 }
-void platform_shutdown(void) {
-	// Implementation for platform shutdown
-}
+
 void log_shutdown(void) {
 	// Implementation for log shutdown
 }
